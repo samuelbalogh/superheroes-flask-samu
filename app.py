@@ -32,10 +32,7 @@ superheroes = {hero.name.lower(): hero for hero in all_superheroes}
 
 @APP.route("/")
 def index():
-    heroes = random.sample(all_superheroes, k=2)
-
-    fight = Fight(*heroes)
-    fight.start()
+    heroes = all_superheroes
 
     return flask.render_template("index.html", heroes=heroes)
 

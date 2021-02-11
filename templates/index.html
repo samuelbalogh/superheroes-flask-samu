@@ -7,54 +7,10 @@
               filename='hello.css')}}" />
 </head>
 <body>
-
-  <h1>The Jinja templating language</h1>
-
-  <p>
-  With the Jinja templating engine, we can display Python object in our HTML templates. 
-  </p>
-
-  <p>
-  Our superheroes are in this list:
-  </p>
-
-  <p>
-  {{ heroes }}
-  </p>
-
-  <hr/>
-
-  <p>
-  {{ heroes[0].name }} VS {{ heroes[1].name }}
-  </p>
-
-  <hr/>
-
-  <p>Jinja supports `for` loops:</p>
-
-    {% for hero in heroes %}
-      {{ hero }}
-    {% endfor %}
-
-    <hr/>
-
-  <p>To make this more readable, we can wrap the hero names in a HTML list:</p>
-
-
-  <p>
-    <ul>
-    {% for hero in heroes %}
-      <li>{{ hero }} has {{ hero.life }} health points left</li>
-    {% endfor %}
-    </ul>
-  </p>
-
-  <hr/>
-
-  <p>We can also use images in our web pages:</p>
-
-  <img src="{{ heroes[0].image_path }}" style="width: 300px" />
-  <img src="{{ heroes[1].image_path }}" style="width: 300px" />
- 
+  <h1>Superhero Game</h1>
+  <h2>Choose your heroes!</h2>
+  {% for hero in heroes %}
+    <a href="{{ url_for('superhero', name=hero.name.lower()) }}"><img src ="{{hero.image_path}}" style = "width: 300px"/></a>
+  {% endfor %}
 </body>
 </html>
