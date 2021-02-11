@@ -12,6 +12,7 @@ class SuperHero:
         self.max_life = 20
         self.damagemin = damagemin
         self.damagemax = damagemax
+        self.image_path = f'/static/{self.name.lower()}.png'
 
         self.description = (
             self.name + " has the following powers: " + ", ".join(self.powers)
@@ -26,12 +27,15 @@ class SuperHero:
     # the hero should say something
     def speak(self):
         intros = [f"Hi, I'm {self.name} and I will kick your ass!", "I am darkness!"]
-        print(random.choice(intros))
+        return random.choice(intros)
 
     # this function should reset the hero's life back to it's maximum level
     def go_to_hospital(self):
         print(f"{self.name} went to the hospital, now he feels ready to fight again!")
         self.life = self.max_life
+
+    def __str__(self):
+        return self.name
 
 
 # another approach is to create a Fight class:
@@ -68,46 +72,28 @@ class Fight:
         # Fight scene starts here:
         round_number = 1
         print(f"{self.p1.name} will start the battle!")
-        while (self.p1.strength and self.p2.strength) > 0:
+        while round_number < 3:
+
             self.p1.damage = random.randint(self.p1.damagemin, self.p1.damagemax)
             self.p2.damage = random.randint(self.p2.damagemin, self.p2.damagemax)
 
-            print(f"----------------------------------------------------------")
-            print(f"Round {round_number}... FIGHT!!")
-
-            self.p2.life -= self.p1.damage
-            print(
-                f"{self.p1.name} damages {self.p1.damage}. {self.p2.name} now has {self.p2.life} lifepoints left..."
-            )
+            self.p2.life -= min(self.p1.damage, self.p2.life - 1)
             if self.p2.life <= 0:
                 return f"{self.p1.name} has won the battle!!! It's time for someone to take {self.p2.name} to the hospital!"
 
-            self.p1.life -= self.p2.damage
-            print(
-                f"{self.p2.name} damages {self.p2.damage}. {self.p1.name} now has {self.p1.life} lifepoints left..."
-            )
+            self.p1.life -= min(self.p2.damage, self.p1.life - 1)
             if self.p1.life <= 0:
                 return f"{self.p2.name} has won the battle!!! It's time for someone to take {self.p2.name} to the hospital!"
 
-            self.print_health_points()
-
-            keep_fighting = input(
-                "Press 'n' to give up, press any other key to continue"
-            )
+            keep_fighting = True
+            #keep_fighting = input(
+            #    "Press 'n' to give up, press any other key to continue"
+            #)
             if keep_fighting == "n":
-                print("It's getting too dangerous, the fight has been postponed!")
                 self.has_ended = True
                 break
             else:
                 round_number += 1
-
-    def print_health_points(self):
-        print(f"{self.p1.name} has {self.p1.life} health points left")
-        print(f"{self.p1.life * '💚'}{(self.p1.max_life - self.p1.life) * '💔'}")
-        print()
-        print(f"{self.p2.name} has {self.p2.life} health points left")
-        print(f"{self.p2.life * '💚'}{(self.p2.max_life - self.p2.life) * '💔'}")
-
 
 # a class can inherit from another class:
 # in this case, the DCSuperHero class inherits from the SuperHero class
